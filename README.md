@@ -54,3 +54,10 @@ Vous recherchez un nombre en 1 et 1000. Un seul nombre nombre correspond à la d
 
 #### livrable n°2
 Pour cet exercice, il vous est demandé de compléter le fichier `python/student.py`. Les consignes concernant les différents scripts à produire sont notés en commentaire dans ce fichier.
+
+---
+
+## Livraison
+Pour livrer votre travail :
+- Vous effectuerez un fork de ce repository [`waldeck-dev/datalumni-test`](https://github.com/waldeck-dev/datalumni-test)
+- Vous nous transmettrez le lien vers votre repository contenant votre travail
