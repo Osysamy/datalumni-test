@@ -4,16 +4,131 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Datalumni's coding tests</title>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  
+  <style>
+	* {
+		font-family: 'Arial'
+	} 
+	table {
+	  border-collapse: collapse;
+	  width: 100%;
+	}
+
+	th, td {
+	  padding: 8px;
+	  text-align: left;
+	  border-bottom: 1px solid #ddd;
+	}
+
+	tr:hover {background-color:#f5f5f5;}
+
+  button{
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer; 
+  }
+
+  #duplicate{
+    background-color: #007BFF;
+    color:white;    
+  }
+
+  #remove{
+    background-color: #E91515;
+    color:white;    
+  }
+
+
+
+
+  </style>
 </head>
+
 <body>
 
-  <div id="app"></div>
- 
+  <div id="app">
+    <table v-if="employees">
+      <tr>
+        <th>EOD</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Monthly Salary</th>
+        <th>Year of birth</th>
+        <th>Actions</th>
+      </tr>
+      <tr v-for='employee of employees'>
+        <td>{{ employee.id }}</td>
+		    <td>{{ employee.employee_name }}</td>
+        <td>{{ getEmail(employee.employee_name) }}</td>
+        <td>{{ getSalary(employee.employee_salary) }} €</td>
+        <td>{{ getBirthYear(employee.employee_age) }}</td>
+        <td>
+          <button id="duplicate" v-on:click="duplicate(employee)">Duplicate</button>
+          <button id="remove" v-on:click="remove(employee)">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">{{ getEmployeeNumber() }}</td>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold;">{{ getSalarySum() }} €</td>
+        <td></td>
+      </tr>
+    </table>
+    <h1 v-else>No employees in the list</h1>
+  </div>
+
   <script>
     const vue = new Vue({
-      el: '#app'
+      el: '#app',
+      data: {
+        employees: null
+      },
+      mounted: function() {
+        axios.get('http://dummy.restapiexample.com/api/v1/employees')
+        .then(response => {
+          this.employees = response.data.data
+        })
+      },
+      methods: {
+        getEmail(name){
+          const nameArray = name.toLowerCase().split(' ')
+          const firstNameLetter = nameArray[0].charAt(0)
+          return firstNameLetter + '.' + nameArray[1] + '@email.com'
+        },
+        getBirthYear(age){
+          const currentYear = new Date().getFullYear()
+          return currentYear - age
+        },
+        getSalary(salary){
+          return [salary.slice(0, -2), '.', salary.slice(-2)].join('')
+        },
+        getEmployeeNumber(){
+          return this.employees ? this.employees.length : 0
+        },
+        getSalarySum(){
+          let total = 0
+          if(this.employees != null)
+            for(let employee of this.employees){
+              total += parseFloat(employee.employee_salary)
+            }
+          return this.getSalary(total.toString())
+        },
+        duplicate(employee){
+          const index = this.employees.indexOf(employee)
+          this.employees.push(this.employees[index])
+        },
+        remove(employee){
+          const index = this.employees.lastIndexOf(employee)
+          this.employees.splice(index, 1)
+        },
+        sortSalary(){
+
+        }
+      }
     })
   </script>
 </body>
