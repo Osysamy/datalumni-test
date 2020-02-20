@@ -1,22 +1,43 @@
-# Your code goes here
+import csv
+
+def recoverRows(filename):
+    data = []
+    file=open(filename,"r")
+    test=csv.reader(file)
+    for row in test:
+        data.append(row)
+    return data
+
+def calculateRows(data):
+    i=0
+    for row in data:
+       i=i+1
+    return i
+
+def listDegree(name):
+    list = []
+    for row in name:
+       list.append(row[4])
+    list = set(list)
+    return list
+       
+    
+
 
 if __name__ == "__main__":
 
     filename = 'students.csv'
-
-    # Ecrivez une fonction permettant de récupérer toutes les lignes
-    # du fichier CSV dans une list() `data`
-    rows = # TODO
+    data = recoverRows(filename)
+    print(data)
+    rows = data
     print(f'\nLe fichier brut contient {len(rows)} lignes')
-
-    # Les étudiants ont chacun un diplôme qui leur est attribué
-    # La variable `degrees` contient la liste des diplômes
-    degrees = # TODO
+   
+    degrees = listDegree(data)
     print(f'\nLe fichier contient {len(degrees)} diplômes uniques')
 
     # Donnez, dans un dict, pour chaque diplôme le nombre d'étudiant
     # par catégorie d'utilisateur (student, alumni, ...)
-    users_per_degree = # TODO
+    users_per_degree = 
     print(f'\nLa répartition des diplômes est la suivante :')
     for degree in users_per_degree.keys():
         print(f' - {degree}, {users_per_degree[degree]} étudiants')
